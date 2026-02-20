@@ -5,7 +5,7 @@
     "prompt": "I want to automatically sync my GitHub issues to Jira. We use Jira project key PA for our PureWills API repo.",
     "expectations": [
       "Generates a .github/workflows/jira-sync.yml caller workflow file",
-      "The workflow references grexp/gh-issue-jira-sync/.github/workflows/sync.yml@main",
+      "The workflow references TheGrowthExponent/gh-issue-jira-sync/.github/workflows/sync.yml@main",
       "Uses vars.JIRA_PROJECT_KEY (not hardcoded)",
       "Lists the three required secrets: JIRA_BASE_URL, JIRA_USER_EMAIL, JIRA_API_TOKEN",
       "Mentions that JIRA_PROJECT_KEY should be set as a repo variable (not secret)",

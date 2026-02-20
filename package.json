@@ -1,10 +1,12 @@
 {
   "name": "gh-issue-jira-sync",
   "version": "1.0.0",
-  "description": "GitHub Issue → Jira sync script. Part of grexp/gh-issue-jira-sync.",
+  "description": "GitHub Issue → Jira sync script. Part of TheGrowthExponent/gh-issue-jira-sync.",
   "type": "module",
   "main": "sync.js",
-  "engines": { "node": ">=20" },
+  "engines": {
+    "node": ">=20"
+  },
   "dependencies": {
     "@octokit/rest": "^21.0.2"
   }
