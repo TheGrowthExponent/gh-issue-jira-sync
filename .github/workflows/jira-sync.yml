@@ -1,0 +1,62 @@
+name: Sync GitHub Issues to Jira
+
+on:
+  issues:
+    types: [opened, reopened, labeled]
+
+  # Also allow manual trigger to bulk-sync any unsynced open issues
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Dry run — log actions without creating Jira tickets'
+        required: false
+        default: 'false'
+        type: boolean
+
+jobs:
+  sync-to-jira:
+    name: Sync issue to Jira
+    runs-on: ubuntu-latest
+
+    # Skip if the issue already has a jira-key label — it's already been synced
+    # The sync script does a second check too, but this avoids spinning up the job at all
+    if: |
+      github.event_name == 'workflow_dispatch' ||
+      !contains(toJson(github.event.issue.labels.*.name), 'jira:')
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: scripts/package.json
+
+      - name: Install dependencies
+        working-directory: scripts
+        run: npm ci
+
+      - name: Sync issue to Jira
+        working-directory: scripts
+        env:
+          # --- GitHub ---
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+          GH_ISSUE_NUMBER: ${{ github.event.issue.number }}
+
+          # --- Jira ---
+          JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}        # e.g. https://yourorg.atlassian.net
+          JIRA_USER_EMAIL: ${{ secrets.JIRA_USER_EMAIL }}    # Jira account email
+          JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}      # Jira API token
+
+          # --- Repo variable (set per-repo in Settings → Variables) ---
+          JIRA_PROJECT_KEY: ${{ vars.JIRA_PROJECT_KEY }}     # e.g. OLSF, PA, DED
+
+          # --- Options ---
+          DRY_RUN: ${{ github.event.inputs.dry_run || 'false' }}
+          BULK_SYNC: ${{ github.event_name == 'workflow_dispatch' && 'true' || 'false' }}
+
+        run: node sync.js

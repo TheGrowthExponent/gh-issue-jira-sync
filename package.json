@@ -1,0 +1,13 @@
+{
+  "name": "todo-issue-jira-sync",
+  "version": "1.0.0",
+  "description": "Syncs TODO→ISSUE GitHub issues to Jira and closes them as migrated",
+  "type": "module",
+  "scripts": {
+    "sync": "node sync.js",
+    "test": "node --test sync.test.js"
+  },
+  "dependencies": {
+    "@octokit/rest": "^21.0.2"
+  }
+}
