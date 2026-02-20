@@ -1,0 +1,98 @@
+name: GitHub Issue → Jira Sync (Reusable)
+
+on:
+  workflow_call:
+    inputs:
+      jira_project_key:
+        description: 'Jira project key (e.g. OLSF, PA, DED). Set as a repo variable JIRA_PROJECT_KEY.'
+        required: true
+        type: string
+      dry_run:
+        description: 'Log only — no Jira tickets created, no GH issues closed'
+        required: false
+        default: 'false'
+        type: string
+      bulk_sync:
+        description: 'Sync all open issues without a jira: label (workflow_dispatch path)'
+        required: false
+        default: 'false'
+        type: string
+      close_after_sync:
+        description: 'Close the GH issue after creating the Jira ticket'
+        required: false
+        default: 'true'
+        type: string
+      jira_issue_type_default:
+        description: 'Fallback Jira issue type when no type label is present'
+        required: false
+        default: 'Task'
+        type: string
+
+    secrets:
+      jira_base_url:
+        description: 'Jira instance URL, e.g. https://yourorg.atlassian.net'
+        required: true
+      jira_user_email:
+        description: 'Email of the Jira account used for API access'
+        required: true
+      jira_api_token:
+        description: 'Jira API token from https://id.atlassian.com/manage-profile/security/api-tokens'
+        required: true
+      github_token:
+        description: 'GitHub token with issues:write permission'
+        required: true
+
+jobs:
+  sync-to-jira:
+    name: Sync to Jira (${{ inputs.jira_project_key }})
+    runs-on: ubuntu-latest
+
+    # Fast-exit: if triggered by an issue event and it already has a jira: label, skip the job entirely
+    if: |
+      inputs.bulk_sync == 'true' ||
+      !contains(toJson(github.event.issue.labels.*.name), 'jira:')
+
+    steps:
+      - name: Checkout shared action repo
+        uses: actions/checkout@v4
+        with:
+          repository: grexp/gh-issue-jira-sync
+          ref: main
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: scripts/package.json
+
+      - name: Install dependencies
+        working-directory: scripts
+        run: npm ci --prefer-offline
+
+      - name: Run sync
+        working-directory: scripts
+        env:
+          GITHUB_TOKEN:            ${{ secrets.github_token }}
+          GH_REPO:                 ${{ github.repository }}
+          GH_ISSUE_NUMBER:         ${{ github.event.issue.number }}
+          JIRA_BASE_URL:           ${{ secrets.jira_base_url }}
+          JIRA_USER_EMAIL:         ${{ secrets.jira_user_email }}
+          JIRA_API_TOKEN:          ${{ secrets.jira_api_token }}
+          JIRA_PROJECT_KEY:        ${{ inputs.jira_project_key }}
+          DRY_RUN:                 ${{ inputs.dry_run }}
+          BULK_SYNC:               ${{ inputs.bulk_sync }}
+          CLOSE_AFTER_SYNC:        ${{ inputs.close_after_sync }}
+          JIRA_ISSUE_TYPE_DEFAULT: ${{ inputs.jira_issue_type_default }}
+        run: node sync.js
+
+      - name: Summary
+        if: always()
+        run: |
+          echo "### Jira Sync Result" >> $GITHUB_STEP_SUMMARY
+          echo "| | |" >> $GITHUB_STEP_SUMMARY
+          echo "|---|---|" >> $GITHUB_STEP_SUMMARY
+          echo "| Project | \`${{ inputs.jira_project_key }}\` |" >> $GITHUB_STEP_SUMMARY
+          echo "| Dry run | \`${{ inputs.dry_run }}\` |" >> $GITHUB_STEP_SUMMARY
+          echo "| Bulk sync | \`${{ inputs.bulk_sync }}\` |" >> $GITHUB_STEP_SUMMARY
+          echo "| Triggered by | \`${{ github.event_name }}\` |" >> $GITHUB_STEP_SUMMARY

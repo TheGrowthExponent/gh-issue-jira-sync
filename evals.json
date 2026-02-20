@@ -1,0 +1,59 @@
+[
+  {
+    "id": "eval-0",
+    "description": "User wants to add Jira sync to an existing repo — happy path",
+    "prompt": "I want to automatically sync my GitHub issues to Jira. We use Jira project key PA for our PureWills API repo.",
+    "expectations": [
+      "Generates a .github/workflows/jira-sync.yml caller workflow file",
+      "The workflow references grexp/gh-issue-jira-sync/.github/workflows/sync.yml@main",
+      "Uses vars.JIRA_PROJECT_KEY (not hardcoded)",
+      "Lists the three required secrets: JIRA_BASE_URL, JIRA_USER_EMAIL, JIRA_API_TOKEN",
+      "Mentions that JIRA_PROJECT_KEY should be set as a repo variable (not secret)",
+      "Mentions the dry_run bulk sync option for migrating existing issues"
+    ]
+  },
+  {
+    "id": "eval-1",
+    "description": "User already has the action set up and asks how deduplication works",
+    "prompt": "How does the jira sync know if an issue has already been pushed to Jira?",
+    "expectations": [
+      "Explains the jira:PROJ-123 label as the sync key",
+      "Clarifies that presence of this label = already synced, no Jira ticket will be created",
+      "Does not mention any database or external state",
+      "Explains that the label is created automatically on first use"
+    ]
+  },
+  {
+    "id": "eval-2",
+    "description": "User wants to add the sync to multiple repos pointing to different Jira projects",
+    "prompt": "We have 5 repos and each should sync to a different Jira project. How do I set that up?",
+    "expectations": [
+      "Explains that JIRA_PROJECT_KEY is a repo variable set per-repo",
+      "Makes clear that the same workflow file works in all repos",
+      "The shared secrets (JIRA_BASE_URL, JIRA_USER_EMAIL, JIRA_API_TOKEN) can be set at org level",
+      "Gives the exact workflow file they add to each repo (it's always the same file)"
+    ]
+  },
+  {
+    "id": "eval-3",
+    "description": "User wants a dry run before committing to bulk migrate 200 existing issues",
+    "prompt": "I have about 200 open GitHub issues I want to migrate to Jira. How do I do this safely?",
+    "expectations": [
+      "Recommends triggering workflow_dispatch with dry_run=true first",
+      "Explains what dry run does (logs only, no Jira tickets, no GH issues closed)",
+      "Explains bulk_sync mode scans all open issues without a jira: label",
+      "Mentions the 400ms courtesy delay between creates to avoid rate limits"
+    ]
+  },
+  {
+    "id": "eval-4",
+    "description": "User asks what happens if the same issue is triggered twice",
+    "prompt": "What if the action runs twice on the same issue? Will I get duplicate Jira tickets?",
+    "expectations": [
+      "Confirms it is fully idempotent",
+      "First run: creates Jira ticket + applies jira:PROJ-123 label",
+      "Second run: detects the label, logs 'already synced', skips",
+      "No duplicate Jira tickets are created"
+    ]
+  }
+]
