@@ -35,9 +35,13 @@ jobs:
           cache: "npm"
           cache-dependency-path: package.json
 
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
       - name: Install dependencies
-        working-directory: scripts
-        run: npm ci
+        run: pnpm install
 
       - name: Sync issue to Jira
         working-directory: scripts
