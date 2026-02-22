@@ -1,0 +1,21 @@
+{
+  "root": true,
+  "env": {
+    "node": true,
+    "es2021": true,
+    "jest": true
+  },
+  "parserOptions": {
+    "ecmaVersion": 12,
+    "sourceType": "module"
+  },
+  "plugins": ["prettier"],
+  "extends": ["eslint:recommended", "prettier"],
+  "rules": {
+    "semi": ["error", "always"],
+    "quotes": ["error", "single"],
+    "no-unused-vars": "warn",
+    "prettier/prettier": "error"
+  },
+  "ignorePatterns": ["dist/", "node_modules/", "tests/", "docs/"]
+}
