@@ -8,9 +8,9 @@ on:
   workflow_dispatch:
     inputs:
       dry_run:
-        description: 'Dry run — log actions without creating Jira tickets'
+        description: "Dry run — log actions without creating Jira tickets"
         required: false
-        default: 'false'
+        default: "false"
         type: boolean
 
 jobs:
@@ -31,9 +31,9 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
-          cache: 'npm'
-          cache-dependency-path: scripts/package.json
+          node-version: "20"
+          cache: "npm"
+          cache-dependency-path: package.json
 
       - name: Install dependencies
         working-directory: scripts
@@ -48,12 +48,12 @@ jobs:
           GH_ISSUE_NUMBER: ${{ github.event.issue.number }}
 
           # --- Jira ---
-          JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}        # e.g. https://yourorg.atlassian.net
-          JIRA_USER_EMAIL: ${{ secrets.JIRA_USER_EMAIL }}    # Jira account email
-          JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}      # Jira API token
+          JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }} # e.g. https://yourorg.atlassian.net
+          JIRA_USER_EMAIL: ${{ secrets.JIRA_USER_EMAIL }} # Jira account email
+          JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }} # Jira API token
 
           # --- Repo variable (set per-repo in Settings → Variables) ---
-          JIRA_PROJECT_KEY: ${{ vars.JIRA_PROJECT_KEY }}     # e.g. OLSF, PA, DED
+          JIRA_PROJECT_KEY: ${{ vars.JIRA_PROJECT_KEY }} # e.g. OLSF, PA, DED
 
           # --- Options ---
           DRY_RUN: ${{ github.event.inputs.dry_run || 'false' }}
