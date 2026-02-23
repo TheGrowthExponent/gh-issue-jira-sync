@@ -81,7 +81,7 @@ on:
 
 jobs:
   sync-to-jira:
-    uses: ./.github/workflows/sync.yml
+    uses: TheGrowthExponent/gh-issue-jira-sync/.github/workflows/sync.yml@main
     with:
       jira_project_key: ${{ vars.JIRA_PROJECT_KEY }}
       dry_run: ${{ github.event.inputs.dry_run || 'false' }}
