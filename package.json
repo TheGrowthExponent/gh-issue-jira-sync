@@ -1,48 +1,30 @@
 {
   "name": "gh-issue-jira-sync",
   "version": "1.0.0",
-  "description": "GitHub Issue → Jira sync script. Part of TheGrowthExponent/gh-issue-jira-sync.",
-  "main": "dist/index.js",
+  "description": "GitHub Action to sync GitHub Issues to Jira.",
+  "main": "scripts/sync.js",
   "type": "module",
   "engines": {
-    "node": ">=20.0.0"
-  },
-  "scripts": {
-    "lint": "eslint .",
-    "format": "prettier --write .",
-    "test": "vitest run",
-    "build": "tsc",
-    "typecheck": "tsc --noEmit",
-    "bundle": "ncc build src/index.ts -o dist",
-    "release": "npm run bundle && git add dist && git commit -m 'Bundle action for release'"
+    "node": ">=20"
   },
   "keywords": [
     "github-action",
-    "todo",
-    "issue",
-    "automation",
-    "technical-debt"
+    "jira",
+    "issue-sync"
   ],
-  "author": "",
+  "author": "TheGrowthExponent",
   "license": "MIT",
   "dependencies": {
-    "@actions/core": "^3.0.0",
-    "@actions/github": "^9.0.0",
-    "@octokit/rest": "^20.1.2",
-    "js-yaml": "^4.1.1",
-    "micromatch": "^4.0.8",
-    "simple-git": "^3.20.0"
+    "@octokit/rest": "^20.1.2"
   },
   "devDependencies": {
-    "@types/js-yaml": "^4.0.9",
-    "@types/micromatch": "^4.0.10",
-    "@types/node": "^25.3.0",
-    "@typescript-eslint/eslint-plugin": "^8.56.0",
-    "eslint": "^8.56.0",
-    "eslint-config-prettier": "^10.1.8",
-    "eslint-plugin-prettier": "^5.5.5",
-    "prettier": "^3.2.5",
-    "typescript": "^5.9.3",
-    "vitest": "^4.0.18"
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.0.1",
+    "eslint-config-standard": "^17.1.0",
+    "eslint-plugin-import": "^2.32.0",
+    "eslint-plugin-prettier": "^5.5.5"
+  },
+  "scripts": {
+    "lint": "eslint ."
   }
 }

@@ -40,18 +40,18 @@ The `jira:PROJ-123` label is the source of truth. If it's there, the issue is sy
 
 Settings → Secrets and variables → Actions → **Secrets**
 
-| Secret | Value |
-|--------|-------|
-| `JIRA_BASE_URL` | `https://yourorg.atlassian.net` |
-| `JIRA_USER_EMAIL` | Email of your Jira service account |
-| `JIRA_API_TOKEN` | [Create one here](https://id.atlassian.com/manage-profile/security/api-tokens) |
+| Secret            | Value                                                                          |
+| ----------------- | ------------------------------------------------------------------------------ |
+| `JIRA_BASE_URL`   | `https://yourorg.atlassian.net`                                                |
+| `JIRA_USER_EMAIL` | Email of your Jira service account                                             |
+| `JIRA_API_TOKEN`  | [Create one here](https://id.atlassian.com/manage-profile/security/api-tokens) |
 
 ### 2. Add a repo variable
 
 Settings → Secrets and variables → Actions → **Variables**
 
-| Variable | Value |
-|----------|-------|
+| Variable           | Value                                            |
+| ------------------ | ------------------------------------------------ |
 | `JIRA_PROJECT_KEY` | Your Jira project key — e.g. `OLSF`, `PA`, `DED` |
 
 This is a **variable** not a secret — easy to see and change per repo. Different repos can sync to different Jira projects.
@@ -81,10 +81,10 @@ jobs:
       dry_run: ${{ github.event.inputs.dry_run || 'false' }}
       bulk_sync: ${{ github.event_name == 'workflow_dispatch' && 'true' || 'false' }}
     secrets:
-      jira_base_url:    ${{ secrets.JIRA_BASE_URL }}
-      jira_user_email:  ${{ secrets.JIRA_USER_EMAIL }}
-      jira_api_token:   ${{ secrets.JIRA_API_TOKEN }}
-      github_token:     ${{ secrets.GITHUB_TOKEN }}
+      jira_base_url: ${{ secrets.JIRA_BASE_URL }}
+      jira_user_email: ${{ secrets.JIRA_USER_EMAIL }}
+      jira_api_token: ${{ secrets.JIRA_API_TOKEN }}
+      github_token: ${{ secrets.GITHUB_TOKEN }}
 ```
 
 That's it. Next issue opened → Jira ticket created automatically.
@@ -94,6 +94,7 @@ That's it. Next issue opened → Jira ticket created automatically.
 ## Label format
 
 Issues get labelled `jira:PROJ-123` after syncing. This label:
+
 - Is the idempotency key — if present, the issue is skipped
 - Contains the exact Jira ticket number for traceability
 - Is created automatically in your repo on first use (colour: blue)
@@ -102,50 +103,50 @@ Issues get labelled `jira:PROJ-123` after syncing. This label:
 
 ## Priority mapping
 
-| GitHub label | Jira priority |
-|---|---|
-| `priority:critical` | Highest |
-| `priority:high` | High |
-| `priority:medium` | Medium |
-| `priority:low` | Low |
-| _(none)_ | Medium |
+| GitHub label        | Jira priority |
+| ------------------- | ------------- |
+| `priority:critical` | Highest       |
+| `priority:high`     | High          |
+| `priority:medium`   | Medium        |
+| `priority:low`      | Low           |
+| _(none)_            | Medium        |
 
 ## Issue type mapping
 
-| GitHub label | Jira type |
-|---|---|
-| `security`, `bug` | Bug |
-| `tech-debt` | Task |
-| `enhancement`, `feature` | Story |
-| _(none)_ | Task _(configurable via `jira_issue_type_default`)_ |
+| GitHub label             | Jira type                                           |
+| ------------------------ | --------------------------------------------------- |
+| `security`, `bug`        | Bug                                                 |
+| `tech-debt`              | Task                                                |
+| `enhancement`, `feature` | Story                                               |
+| _(none)_                 | Task _(configurable via `jira_issue_type_default`)_ |
 
 ---
 
 ## Inputs
 
-| Input | Required | Default | Description |
-|-------|----------|---------|-------------|
-| `jira_project_key` | ✅ | — | Jira project key (e.g. `OLSF`) |
-| `dry_run` | ❌ | `false` | Log only — no Jira tickets, no closed issues |
-| `bulk_sync` | ❌ | `false` | Sync all open unsynced issues (for `workflow_dispatch`) |
-| `close_after_sync` | ❌ | `true` | Close the GH issue after creating the Jira ticket |
-| `jira_issue_type_default` | ❌ | `Task` | Fallback Jira issue type when no type label matches |
+| Input                     | Required | Default | Description                                             |
+| ------------------------- | -------- | ------- | ------------------------------------------------------- |
+| `jira_project_key`        | ✅       | —       | Jira project key (e.g. `OLSF`)                          |
+| `dry_run`                 | ❌       | `false` | Log only — no Jira tickets, no closed issues            |
+| `bulk_sync`               | ❌       | `false` | Sync all open unsynced issues (for `workflow_dispatch`) |
+| `close_after_sync`        | ❌       | `true`  | Close the GH issue after creating the Jira ticket       |
+| `jira_issue_type_default` | ❌       | `Task`  | Fallback Jira issue type when no type label matches     |
 
 ## Secrets
 
-| Secret | Required | Description |
-|--------|----------|-------------|
-| `jira_base_url` | ✅ | `https://yourorg.atlassian.net` |
-| `jira_user_email` | ✅ | Jira account email |
-| `jira_api_token` | ✅ | Jira API token |
-| `github_token` | ✅ | Use `secrets.GITHUB_TOKEN` |
+| Secret            | Required | Description                     |
+| ----------------- | -------- | ------------------------------- |
+| `jira_base_url`   | ✅       | `https://yourorg.atlassian.net` |
+| `jira_user_email` | ✅       | Jira account email              |
+| `jira_api_token`  | ✅       | Jira API token                  |
+| `github_token`    | ✅       | Use `secrets.GITHUB_TOKEN`      |
 
 ---
 
 ## Outputs
 
-| Output | Description |
-|--------|-------------|
+| Output     | Description                                             |
+| ---------- | ------------------------------------------------------- |
 | `jira_key` | The Jira key created, e.g. `OLSF-42`. Empty if skipped. |
 
 ---

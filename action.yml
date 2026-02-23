@@ -1,61 +1,61 @@
-name: "GitHub Issue → Jira Sync"
+name: 'GitHub Issue → Jira Sync'
 description: >
   Automatically syncs GitHub Issues to Jira. Checks for an existing jira:PROJ-123
   label (the sync key) before creating a ticket — fully idempotent. Closes the
   GitHub Issue with a Jira link after syncing.
 
-author: "TheGrowthExponent"
+author: 'TheGrowthExponent'
 
 branding:
-  icon: "refresh-cw"
-  color: "blue"
+  icon: 'refresh-cw'
+  color: 'blue'
 
 inputs:
   jira_project_key:
-    description: "Jira project key (e.g. OLSF, PA, DED). Recommend setting as repo variable JIRA_PROJECT_KEY."
+    description: 'Jira project key (e.g. OLSF, PA, DED). Recommend setting as repo variable JIRA_PROJECT_KEY.'
     required: true
 
   jira_base_url:
-    description: "Jira instance URL, e.g. https://yourorg.atlassian.net"
+    description: 'Jira instance URL, e.g. https://yourorg.atlassian.net'
     required: true
 
   jira_user_email:
-    description: "Email of the Jira account used for the API token"
+    description: 'Email of the Jira account used for the API token'
     required: true
 
   jira_api_token:
-    description: "Jira API token — create one at https://id.atlassian.com/manage-profile/security/api-tokens"
+    description: 'Jira API token — create one at https://id.atlassian.com/manage-profile/security/api-tokens'
     required: true
 
   github_token:
-    description: "GitHub token with issues:write permission. Use secrets.GITHUB_TOKEN."
+    description: 'GitHub token with issues:write permission. Use secrets.GITHUB_TOKEN.'
     required: true
     default: ${{ github.token }}
 
   dry_run:
-    description: "Set to true to log actions without creating Jira tickets or closing issues"
+    description: 'Set to true to log actions without creating Jira tickets or closing issues'
     required: false
-    default: "false"
+    default: 'false'
 
   bulk_sync:
-    description: "Set to true to sync all open issues without a jira: label (for workflow_dispatch runs)"
+    description: 'Set to true to sync all open issues without a jira: label (for workflow_dispatch runs)'
     required: false
-    default: "false"
+    default: 'false'
 
   close_after_sync:
-    description: "Close the GitHub Issue after the Jira ticket is created"
+    description: 'Close the GitHub Issue after the Jira ticket is created'
     required: false
-    default: "true"
+    default: 'true'
 
   jira_issue_type_default:
-    description: "Fallback Jira issue type when no recognised type label is present"
+    description: 'Fallback Jira issue type when no recognised type label is present'
     required: false
-    default: "Task"
+    default: 'Task'
 
 outputs:
   jira_key:
-    description: "The Jira issue key created (e.g. OLSF-42), or empty if skipped"
+    description: 'The Jira issue key created (e.g. OLSF-42), or empty if skipped'
 
 runs:
-  using: "node20"
-  main: "scripts/sync.js"
+  using: 'node20'
+  main: 'scripts/sync.js'

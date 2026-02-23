@@ -4,39 +4,39 @@ on:
   workflow_call:
     inputs:
       jira_project_key:
-        description: "Jira project key (e.g. OLSF, PA, DED). Set as a repo variable JIRA_PROJECT_KEY."
+        description: 'Jira project key (e.g. OLSF, PA, DED). Set as a repo variable JIRA_PROJECT_KEY.'
         required: true
         type: string
       dry_run:
-        description: "Log only — no Jira tickets created, no GH issues closed"
+        description: 'Log only — no Jira tickets created, no GH issues closed'
         required: false
-        default: "false"
+        default: 'false'
         type: string
       bulk_sync:
-        description: "Sync all open issues without a jira: label (workflow_dispatch path)"
+        description: 'Sync all open issues without a jira: label (workflow_dispatch path)'
         required: false
-        default: "false"
+        default: 'false'
         type: string
       close_after_sync:
-        description: "Close the GH issue after creating the Jira ticket"
+        description: 'Close the GH issue after creating the Jira ticket'
         required: false
-        default: "true"
+        default: 'true'
         type: string
       jira_issue_type_default:
-        description: "Fallback Jira issue type when no type label is present"
+        description: 'Fallback Jira issue type when no type label is present'
         required: false
-        default: "Task"
+        default: 'Task'
         type: string
 
     secrets:
       jira_base_url:
-        description: "Jira instance URL, e.g. https://yourorg.atlassian.net"
+        description: 'Jira instance URL, e.g. https://yourorg.atlassian.net'
         required: true
       jira_user_email:
-        description: "Email of the Jira account used for API access"
+        description: 'Email of the Jira account used for API access'
         required: true
       jira_api_token:
-        description: "Jira API token from https://id.atlassian.com/manage-profile/security/api-tokens"
+        description: 'Jira API token from https://id.atlassian.com/manage-profile/security/api-tokens'
         required: true
 
 jobs:
@@ -59,8 +59,8 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
-          cache: "npm"
+          node-version: '20'
+          cache: 'npm'
           cache-dependency-path: scripts/package.json
 
       - name: Install pnpm

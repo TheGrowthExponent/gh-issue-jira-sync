@@ -16,7 +16,7 @@
 
 import { Octokit } from '@octokit/rest';
 
-// ─── Environment ──────────────────────────────────────────────────────────────
+// ─── Environment ────────────────────────────────────────────────────────────────
 
 const ENV = {
   GITHUB_TOKEN: process.env.GITHUB_TOKEN,
@@ -54,7 +54,7 @@ const JIRA_HEADERS = {
   'Content-Type': 'application/json',
 };
 
-// ─── Mappings ─────────────────────────────────────────────────────────────────
+// ─── Mappings ───────────────────────────────────────────────────────────────────
 
 // GitHub priority label → Jira priority name
 // These match default Jira priority schemes — customise if your scheme differs
@@ -75,7 +75,7 @@ const TYPE_MAP = {
   feature: 'Story',
 };
 
-// ─── Label helpers ────────────────────────────────────────────────────────────
+// ─── Label helpers ───────────────────────────────────────────────────────────────
 
 /** Returns the Jira key if a `jira:PROJ-123` label exists, otherwise null */
 function getJiraKeyFromLabels(labels = []) {
@@ -97,7 +97,7 @@ function deriveIssueType(labels = []) {
   return ENV.JIRA_ISSUE_TYPE_DEFAULT;
 }
 
-// ─── Body parsing ─────────────────────────────────────────────────────────────
+// ─── Body parsing ────────────────────────────────────────────────────────────────
 
 /**
  * Extracts structured fields from the TODO→ISSUE markdown table in the GH body.
@@ -125,7 +125,7 @@ function parseBody(body = '') {
   };
 }
 
-// ─── Jira ADF description builder ────────────────────────────────────────────
+// ─── Jira ADF description builder ───────────────────────────────────────────────
 
 function adfTableRow(cells, header = false) {
   return {
@@ -213,7 +213,7 @@ function buildDescription(issue, meta) {
   return { version: 1, type: 'doc', content };
 }
 
-// ─── Jira API ─────────────────────────────────────────────────────────────────
+// ─── Jira API ───────────────────────────────────────────────────────────────────
 
 async function jira(method, path, body) {
   const url = `${ENV.JIRA_BASE_URL}/rest/api/3${path}`;
@@ -264,7 +264,7 @@ async function createJiraIssue(issue) {
   return result.key;
 }
 
-// ─── GitHub operations ────────────────────────────────────────────────────────
+// ─── GitHub operations ──────────────────────────────────────────────────────────
 
 async function ensureLabel(name, color = '0075ca', description = '') {
   try {
@@ -337,7 +337,7 @@ async function closeIssue(issueNumber, jiraKey) {
   });
 }
 
-// ─── Core sync ────────────────────────────────────────────────────────────────
+// ─── Core sync ──────────────────────────────────────────────────────────────────
 
 async function syncIssue(issueNumber) {
   log(`\n── Issue #${issueNumber} ──`);
@@ -414,7 +414,7 @@ async function bulkSync() {
   return summary;
 }
 
-// ─── Entry point ──────────────────────────────────────────────────────────────
+// ─── Entry point ────────────────────────────────────────────────────────────────
 
 function log(...args) {
   console.log(...args);

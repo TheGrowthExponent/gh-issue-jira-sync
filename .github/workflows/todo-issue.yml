@@ -1,12 +1,12 @@
-name: "TODO→ISSUE: Automated TODO to GitHub Issue Pipeline"
+name: 'TODO→ISSUE: Automated TODO to GitHub Issue Pipeline'
 
 on:
   push:
     branches:
-      - "**"
+      - '**'
   pull_request:
     branches:
-      - "**"
+      - '**'
 
 permissions:
   issues: write
