@@ -89,7 +89,7 @@ jobs:
       jira_base_url: ${{ secrets.JIRA_BASE_URL }}
       jira_user_email: ${{ secrets.JIRA_USER_EMAIL }}
       jira_api_token: ${{ secrets.JIRA_API_TOKEN }}
-      github_token: ${{ secrets.GITHUB_TOKEN }}
+      gh_token: ${{ secrets.GITHUB_TOKEN }}
 ```
 
 That's it. Next issue opened → Jira ticket created automatically.

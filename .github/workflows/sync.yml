@@ -38,7 +38,7 @@ on:
       jira_api_token:
         description: 'Jira API token from https://id.atlassian.com/manage-profile/security/api-tokens'
         required: true
-      github_token:
+      gh_token:
         description: 'GitHub token for API access (default: actions runner token)'
         required: true
 
@@ -77,7 +77,7 @@ jobs:
       - name: Run sync
         working-directory: scripts
         env:
-          GITHUB_TOKEN: ${{ secrets.github_token }}
+          GITHUB_TOKEN: ${{ secrets.gh_token }}
           GH_REPO: ${{ github.repository }}
           GH_ISSUE_NUMBER: ${{ github.event.issue.number }}
           JIRA_BASE_URL: ${{ secrets.jira_base_url }}
