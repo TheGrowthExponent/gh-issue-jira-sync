@@ -1,5 +1,10 @@
 # gh-issue-jira-sync
 
+[![Test Status](https://github.com/TheGrowthExponent/gh-issue-jira-sync/actions/workflows/jira-sync.yml/badge.svg)](https://github.com/TheGrowthExponent/gh-issue-jira-sync/actions/workflows/jira-sync.yml)
+[![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-FFDD00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black)](https://buymeacoffee.com/grexp)
+[![Donate via PayPal](https://img.shields.io/badge/Donate-PayPal-blue.svg?logo=paypal)](https://www.paypal.com/donate/?hosted_button_id=3D3EH5AXHUKEJ)
+[![Donate via Stripe](https://img.shields.io/badge/Donate-Stripe-635bff.svg?logo=stripe&logoColor=white)](https://buy.stripe.com/5kQcN551M7ZM8LOa9c7EQ00)
+
 > Automatically sync GitHub Issues to Jira — idempotent, zero-config, one file to add.
 
 [![GitHub Action](https://img.shields.io/badge/GitHub_Action-reusable-blue?logo=github)](https://github.com/TheGrowthExponent/gh-issue-jira-sync)
