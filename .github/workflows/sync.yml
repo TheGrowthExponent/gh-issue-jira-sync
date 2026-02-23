@@ -39,7 +39,7 @@ on:
         description: 'Jira API token from https://id.atlassian.com/manage-profile/security/api-tokens'
         required: true
       GITHUB_TOKEN:
-        description: 'GitHub token used for API access, e.g. ${{ secrets.GITHUB_TOKEN }}'
+        description: 'GitHub token used for API access'
         required: true
 
 jobs:
