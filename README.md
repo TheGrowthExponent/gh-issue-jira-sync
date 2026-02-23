@@ -74,22 +74,25 @@ on:
   workflow_dispatch:
     inputs:
       dry_run:
-        description: 'Dry run (log only — no tickets created)'
+        description: 'Dry run — log actions without creating Jira tickets'
+        required: false
         default: 'false'
         type: boolean
 
 jobs:
-  sync:
-    uses: TheGrowthExponent/gh-issue-jira-sync/.github/workflows/sync.yml@main
+  sync-to-jira:
+    uses: ./.github/workflows/sync.yml
     with:
       jira_project_key: ${{ vars.JIRA_PROJECT_KEY }}
       dry_run: ${{ github.event.inputs.dry_run || 'false' }}
       bulk_sync: ${{ github.event_name == 'workflow_dispatch' && 'true' || 'false' }}
+      close_after_sync: 'true'
+      jira_issue_type_default: 'Task'
     secrets:
       jira_base_url: ${{ secrets.JIRA_BASE_URL }}
       jira_user_email: ${{ secrets.JIRA_USER_EMAIL }}
       jira_api_token: ${{ secrets.JIRA_API_TOKEN }}
-      gh_token: ${{ secrets.GITHUB_TOKEN }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 ```
 
 That's it. Next issue opened → Jira ticket created automatically.
