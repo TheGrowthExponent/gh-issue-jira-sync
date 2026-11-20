@@ -57,5 +57,5 @@ outputs:
     description: 'The Jira issue key created (e.g. OLSF-42), or empty if skipped'
 
 runs:
-  using: 'node20'
+  using: 'node24'
   main: 'scripts/sync.js'
