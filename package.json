@@ -5,7 +5,7 @@
   "main": "scripts/sync.js",
   "type": "module",
   "engines": {
-    "node": ">=20"
+    "node": ">=24"
   },
   "keywords": [
     "github-action",
